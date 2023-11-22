@@ -3,8 +3,8 @@ import { studentService } from './student.service';
 
 const createStudent = async (req: Request, res: Response) => {
   try {
-    const student = req.body;
-    const result = await studentService.createStudentInDB(student);
+    const { student: studentData } = req.body;
+    const result = await studentService.createStudentInDB(studentData);
 
     res.status(200).json({
       success: true,
