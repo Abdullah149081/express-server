@@ -1,4 +1,3 @@
-
 import { Schema, model } from 'mongoose';
 import {
   Guardian,
@@ -83,3 +82,5 @@ const studentSchema = new Schema<Student>({
   profileImg: { type: String },
   isActive: ['active', 'blocked'],
 });
+
+export const StudentModel1 = model<Student>('Student', studentSchema);
