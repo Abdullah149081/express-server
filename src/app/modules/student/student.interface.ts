@@ -1,5 +1,3 @@
-import { Schema, connect, model } from 'mongoose';
-
 export type Guardian = {
   fatherName: string;
   fatherOccupation: string;
