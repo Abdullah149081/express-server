@@ -13,14 +13,6 @@ const userNameSchema = new Schema<UserName>({
         required: [true, "First Name is required"],
         trim: true,
         maxlength: [20, "Name can not be more than 20 characters"],
-        validate: {
-            validator: function (value: string) {
-                const firstNameStr =
-                    value.charAt(0).toUpperCase() + value.slice(1);
-                return firstNameStr === value;
-            },
-            message: "{VALUE} is not capitalization",
-        },
     },
     middleName: {
         type: String,
@@ -105,10 +97,6 @@ const studentSchema = new Schema<Student>({
         type: String,
         required: [true, "Email is required"],
         unique: true,
-        validate: {
-            validator: (value: string) => validator.isEmail(value),
-            message: "{VALUE} is not email type",
-        },
     },
     contactNumber: {
         type: String,
