@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { Schema, model } from "mongoose";
+import { Query, Schema, model } from "mongoose";
 import validator from "validator";
 import config from "../../config";
 import {
@@ -86,7 +86,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     password: {
         type: String,
         required: [true, "Password is required"],
-        unique: true,
         maxlength: [20, "Password cann't  be more then 20 Character"],
     },
     name: {
@@ -144,6 +143,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
         },
         default: "active",
     },
+    isDelete: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 studentSchema.pre("save", async function (next) {
@@ -151,6 +154,17 @@ studentSchema.pre("save", async function (next) {
         this.password,
         Number(config.bcrypt_salt_rounds),
     );
+    next();
+});
+
+studentSchema.post("save", function (doc, next) {
+    doc.password = "";
+
+    next();
+});
+
+studentSchema.pre(/^find/, function (this: Query<TStudent, Document>, next) {
+    this.find({ isDelete: { $ne: true } });
     next();
 });
 

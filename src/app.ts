@@ -11,7 +11,10 @@ app.use(cors());
 app.use("/api/v1/student", studentRoutes);
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
+    res.status(200).json({
+        status: true,
+        message: "Hello World!",
+    });
 });
 
 export default app;

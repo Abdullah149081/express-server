@@ -38,6 +38,7 @@ export interface TStudent {
     localGuardian: TLocalGuardian;
     profileImg?: string;
     isActive: "active" | "blocked";
+    isDelete: boolean;
 }
 
 export interface StudentModel extends Model<TStudent> {

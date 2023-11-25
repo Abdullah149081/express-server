@@ -20,6 +20,11 @@ const getSingleStudentFromDB = async (id: string) => {
     return result;
 };
 
+const singleStudentDelete = async (id: string) => {
+    const result = await Student.updateOne({ id }, { isDelete: true });
+    return result;
+};
+
 const deleteAllData = async () => {
     const result = await Student.deleteMany();
     return result;
@@ -30,4 +35,5 @@ export const studentService = {
     getAllStudentFromDB,
     getSingleStudentFromDB,
     deleteAllData,
+    singleStudentDelete,
 };
