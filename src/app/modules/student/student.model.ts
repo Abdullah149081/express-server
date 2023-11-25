@@ -1,13 +1,15 @@
 import { Schema, model } from "mongoose";
 import validator from "validator";
 import {
-    Guardian,
-    LocalGuardian,
-    Student,
-    UserName,
+    StudentMethod,
+    StudentModel,
+    TGuardian,
+    TLocalGuardian,
+    TStudent,
+    TUserName,
 } from "./student.interface";
 
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
     firstName: {
         type: String,
         required: [true, "First Name is required"],
@@ -30,7 +32,7 @@ const userNameSchema = new Schema<UserName>({
     },
 });
 
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<TGuardian>({
     fatherName: {
         type: String,
         trim: true,
@@ -59,7 +61,7 @@ const guardianSchema = new Schema<Guardian>({
     },
 });
 
-const localGuardianSchema = new Schema<LocalGuardian>({
+const localGuardianSchema = new Schema<TLocalGuardian>({
     name: {
         type: String,
         required: [true, "Name is required"],
@@ -78,7 +80,7 @@ const localGuardianSchema = new Schema<LocalGuardian>({
     },
 });
 
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
     id: { type: String, required: [true, "ID is required"], unique: true },
     name: {
         type: userNameSchema,
@@ -137,4 +139,9 @@ const studentSchema = new Schema<Student>({
     },
 });
 
-export const StudentModel1 = model<Student>("Student", studentSchema);
+studentSchema.methods.isStudentExit = async (id: string) => {
+    const exitStudent = await Student.findById({ id });
+    return exitStudent;
+};
+
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);

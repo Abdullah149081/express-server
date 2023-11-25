@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
-
 import { studentService } from "./student.service";
 import studentValidationSchema from "./student.valid";
 
@@ -9,15 +9,15 @@ const createStudent = async (req: Request, res: Response) => {
         const zodParseData = studentValidationSchema.parse(studentData);
         const result = await studentService.createStudentInDB(zodParseData);
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             message: "Student is create Successfully",
             data: result,
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({
             success: false,
-            message: "something went wrong",
+            message: error.message || "something went wrong",
             err: error,
         });
     }
