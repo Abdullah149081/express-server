@@ -139,9 +139,10 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
     },
 });
 
-studentSchema.methods.isStudentExit = async (id: string) => {
-    const exitStudent = await Student.findById({ id });
-    return exitStudent;
+// creating a custom instance method
+studentSchema.methods.isStudentExit = async function (id: string) {
+    const existingUser = await Student.findOne({ id });
+    return existingUser;
 };
 
 export const Student = model<TStudent, StudentModel>("Student", studentSchema);
