@@ -1,5 +1,7 @@
+import bcrypt from "bcrypt";
 import { Schema, model } from "mongoose";
 import validator from "validator";
+import config from "../../config";
 import {
     StudentModel,
     TGuardian,
@@ -81,6 +83,12 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel>({
     id: { type: String, required: [true, "ID is required"], unique: true },
+    password: {
+        type: String,
+        required: [true, "Password is required"],
+        unique: true,
+        maxlength: [20, "Password cann't  be more then 20 Character"],
+    },
     name: {
         type: userNameSchema,
         required: [true, "Name is required"],
@@ -136,6 +144,14 @@ const studentSchema = new Schema<TStudent, StudentModel>({
         },
         default: "active",
     },
+});
+
+studentSchema.pre("save", async function (next) {
+    this.password = await bcrypt.hash(
+        this.password,
+        Number(config.bcrypt_salt_rounds),
+    );
+    next();
 });
 
 studentSchema.statics.isStudentExit = async function (id: string) {

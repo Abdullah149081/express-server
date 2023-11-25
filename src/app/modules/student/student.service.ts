@@ -20,8 +20,14 @@ const getSingleStudentFromDB = async (id: string) => {
     return result;
 };
 
+const deleteAllData = async () => {
+    const result = await Student.deleteMany();
+    return result;
+};
+
 export const studentService = {
     createStudentInDB,
     getAllStudentFromDB,
     getSingleStudentFromDB,
+    deleteAllData,
 };
