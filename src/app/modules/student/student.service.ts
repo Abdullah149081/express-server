@@ -2,11 +2,11 @@ import { TStudent } from "./student.interface";
 import { Student } from "./student.model";
 
 const createStudentInDB = async (studentData: TStudent) => {
-    const student = new Student(studentData);
-    if (await student.isStudentExit(student.id)) {
+    if (await Student.isStudentExit(studentData.id)) {
         throw new Error("Student already crate");
     }
-    const result = await student.save();
+    const result = await Student.create(studentData);
+
     return result;
 };
 

@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 import validator from "validator";
 import {
-    StudentMethod,
     StudentModel,
     TGuardian,
     TLocalGuardian,
@@ -80,7 +79,7 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
     },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
+const studentSchema = new Schema<TStudent, StudentModel>({
     id: { type: String, required: [true, "ID is required"], unique: true },
     name: {
         type: userNameSchema,
@@ -139,8 +138,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethod>({
     },
 });
 
-// creating a custom instance method
-studentSchema.methods.isStudentExit = async function (id: string) {
+studentSchema.statics.isStudentExit = async function (id: string) {
     const existingUser = await Student.findOne({ id });
     return existingUser;
 };
