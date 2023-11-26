@@ -81,72 +81,82 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
     },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel>({
-    id: { type: String, required: [true, "ID is required"], unique: true },
-    password: {
-        type: String,
-        required: [true, "Password is required"],
-        maxlength: [20, "Password cann't  be more then 20 Character"],
-    },
-    name: {
-        type: userNameSchema,
-        required: [true, "Name is required"],
-    },
-    gender: {
-        type: String,
-        enum: {
-            values: ["male", "female"],
-            message: "{VALUE} is not a valid gender",
+const studentSchema = new Schema<TStudent, StudentModel>(
+    {
+        id: { type: String, required: [true, "ID is required"], unique: true },
+        password: {
+            type: String,
+            required: [true, "Password is required"],
+            maxlength: [20, "Password cann't  be more then 20 Character"],
         },
-        required: [true, "Gender is required"],
-    },
-    dateOfBirth: { type: String },
-    email: {
-        type: String,
-        required: [true, "Email is required"],
-        unique: true,
-    },
-    contactNumber: {
-        type: String,
-        required: [true, "Contact number is required"],
-    },
-    emgContactNo: {
-        type: String,
-        required: [true, "Emergency contact number is required"],
-    },
-    bloodGroup: {
-        type: String,
-        enum: {
-            values: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-            message: "{VALUE} is not a valid blood group",
+        name: {
+            type: userNameSchema,
+            required: [true, "Name is required"],
+        },
+        gender: {
+            type: String,
+            enum: {
+                values: ["male", "female"],
+                message: "{VALUE} is not a valid gender",
+            },
+            required: [true, "Gender is required"],
+        },
+        dateOfBirth: { type: String },
+        email: {
+            type: String,
+            required: [true, "Email is required"],
+            unique: true,
+        },
+        contactNumber: {
+            type: String,
+            required: [true, "Contact number is required"],
+        },
+        emgContactNo: {
+            type: String,
+            required: [true, "Emergency contact number is required"],
+        },
+        bloodGroup: {
+            type: String,
+            enum: {
+                values: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+                message: "{VALUE} is not a valid blood group",
+            },
+        },
+        presentAddress: {
+            type: String,
+            required: [true, "Present address is required"],
+        },
+        permanentAddress: {
+            type: String,
+            required: [true, "Permanent address is required"],
+        },
+        guardian: { type: guardianSchema, required: true },
+        localGuardian: {
+            type: localGuardianSchema,
+            required: [true, "Local guardian information is required"],
+        },
+        profileImg: { type: String },
+        isActive: {
+            type: String,
+            enum: {
+                values: ["active", "blocked"],
+                message: "{VALUE} is not a valid status",
+            },
+            default: "active",
+        },
+        isDelete: {
+            type: Boolean,
+            default: false,
         },
     },
-    presentAddress: {
-        type: String,
-        required: [true, "Present address is required"],
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
     },
-    permanentAddress: {
-        type: String,
-        required: [true, "Permanent address is required"],
-    },
-    guardian: { type: guardianSchema, required: true },
-    localGuardian: {
-        type: localGuardianSchema,
-        required: [true, "Local guardian information is required"],
-    },
-    profileImg: { type: String },
-    isActive: {
-        type: String,
-        enum: {
-            values: ["active", "blocked"],
-            message: "{VALUE} is not a valid status",
-        },
-        default: "active",
-    },
-    isDelete: {
-        type: Boolean,
-        default: false,
-    },
+);
+
+studentSchema.virtual("fullName").get(function () {
+    return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
 studentSchema.pre("save", async function (next) {
