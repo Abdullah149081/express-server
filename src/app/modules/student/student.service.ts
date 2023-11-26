@@ -11,12 +11,18 @@ const createStudentInDB = async (studentData: TStudent) => {
 };
 
 const getAllStudentFromDB = async () => {
-    const result = await Student.find();
+    // const result = await Student.find();
+    const result = await Student.aggregate();
     return result;
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-    const result = await Student.findOne({ id });
+    // const result = await Student.findOne({ id });
+    const result = await Student.aggregate([
+        {
+            $match: { id },
+        },
+    ]);
     return result;
 };
 

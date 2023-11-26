@@ -168,6 +168,11 @@ studentSchema.pre(/^find/, function (this: Query<TStudent, Document>, next) {
     next();
 });
 
+studentSchema.pre("aggregate", function (next) {
+    this.pipeline().unshift({ $match: { isDelete: { $ne: true } } });
+    next();
+});
+
 studentSchema.statics.isStudentExit = async function (id: string) {
     const existingUser = await Student.findOne({ id });
     return existingUser;
