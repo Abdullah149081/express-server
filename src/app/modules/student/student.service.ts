@@ -1,14 +1,4 @@
-import { TStudent } from "./student.interface";
 import { Student } from "./student.model";
-
-const createStudentInDB = async (studentData: TStudent) => {
-    if (await Student.isStudentExit(studentData.id)) {
-        throw new Error("Student already crate");
-    }
-    const result = await Student.create(studentData);
-
-    return result;
-};
 
 const getAllStudentFromDB = async () => {
     // const result = await Student.find();
@@ -37,7 +27,6 @@ const deleteAllData = async () => {
 };
 
 export const studentService = {
-    createStudentInDB,
     getAllStudentFromDB,
     getSingleStudentFromDB,
     deleteAllData,

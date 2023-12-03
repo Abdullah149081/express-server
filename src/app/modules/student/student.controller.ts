@@ -1,27 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { studentService } from "./student.service";
-import studentValidationSchema from "./student.valid";
-
-const createStudent = async (req: Request, res: Response) => {
-    try {
-        const { student: studentData } = req.body;
-        const zodParseData = studentValidationSchema.parse(studentData);
-        const result = await studentService.createStudentInDB(zodParseData);
-
-        res.status(201).json({
-            success: true,
-            message: "Student is create Successfully",
-            data: result,
-        });
-    } catch (error: any) {
-        res.status(500).json({
-            success: false,
-            message: error.message || "something went wrong",
-            err: error,
-        });
-    }
-};
 
 const getAllStudent = async (req: Request, res: Response) => {
     try {
@@ -99,7 +78,6 @@ const deleteAllData = async (req: Request, res: Response) => {
 };
 
 export const studentControllers = {
-    createStudent,
     getAllStudent,
     getSingleStudent,
     deleteAllData,
