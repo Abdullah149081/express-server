@@ -23,7 +23,7 @@ const createStudentInDB = async (password: string, studentData: TStudent) => {
         studentData.id = newUser.id;
         studentData.user = newUser._id;
 
-        const newStudent = await Student.create(newUser);
+        const newStudent = await Student.create(studentData);
         return newStudent;
     }
 };
