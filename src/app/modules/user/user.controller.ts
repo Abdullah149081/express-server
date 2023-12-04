@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from "express";
 import { userService } from "./user.service";
-import { UserValidation } from "./user.valid";
 
 const createStudent = async (req: Request, res: Response) => {
     try {
-        const { student: studentData } = req.body;
-        const zodParseData = UserValidation.parse(studentData);
-        const result = await userService.createStudentInDB(zodParseData);
+        const { password, student: studentData } = req.body;
+
+        const result = await userService.createStudentInDB(
+            password,
+            studentData,
+        );
 
         res.status(201).json({
             success: true,

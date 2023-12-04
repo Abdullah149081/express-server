@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { Query, Schema, model } from "mongoose";
 import validator from "validator";
 import config from "../../config";
+
 import {
     StudentModel,
     TGuardian,
@@ -88,6 +89,12 @@ const studentSchema = new Schema<TStudent, StudentModel>(
             type: String,
             required: [true, "Password is required"],
             maxlength: [20, "Password cann't  be more then 20 Character"],
+        },
+        user: {
+            type: Schema.Types.ObjectId,
+            required: [true, "User id is required"],
+            unique: true,
+            ref: "User",
         },
         name: {
             type: userNameSchema,
