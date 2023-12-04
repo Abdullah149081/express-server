@@ -1,7 +1,5 @@
-import bcrypt from "bcrypt";
 import { Query, Schema, model } from "mongoose";
 import validator from "validator";
-import config from "../../config";
 
 import {
     StudentModel,
@@ -85,11 +83,7 @@ const localGuardianSchema = new Schema<TLocalGuardian>({
 const studentSchema = new Schema<TStudent, StudentModel>(
     {
         id: { type: String, required: [true, "ID is required"], unique: true },
-        password: {
-            type: String,
-            required: [true, "Password is required"],
-            maxlength: [20, "Password cann't  be more then 20 Character"],
-        },
+
         user: {
             type: Schema.Types.ObjectId,
             required: [true, "User id is required"],
@@ -157,20 +151,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 
 studentSchema.virtual("fullName").get(function () {
     return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
-
-studentSchema.pre("save", async function (next) {
-    this.password = await bcrypt.hash(
-        this.password,
-        Number(config.bcrypt_salt_rounds),
-    );
-    next();
-});
-
-studentSchema.post("save", function (doc, next) {
-    doc.password = "";
-
-    next();
 });
 
 studentSchema.pre(/^find/, function (this: Query<TStudent, Document>, next) {
