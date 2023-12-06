@@ -29,7 +29,7 @@ export interface TStudent {
     name: TUserName;
     gender: "male" | "female";
     email: string;
-    dateOfBirth: string;
+    dateOfBirth: Date;
     contactNumber: string;
     emgContactNo: string;
     bloodGroup?: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+ " | "AB-";
